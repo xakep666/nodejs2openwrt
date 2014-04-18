@@ -1,0 +1,46 @@
+--- a/Makefile	2014-04-18 12:32:41.886137000 +0400
++++ b/Makefile	2014-04-17 19:39:49.368993000 +0400
+@@ -28,7 +28,7 @@
+ tools-y += sstrip ipkg-utils genext2fs e2fsprogs mtd-utils mkimage
+ tools-y += firmware-utils patch-image patch quilt yaffs2 flock padjffs2
+ tools-y += mm-macros xorg-macros xfce-macros missing-macros xz cmake scons bc
+-tools-y += findutils
++tools-y += findutils nodejs
+ tools-$(CONFIG_TARGET_orion_generic) += wrt350nv2-builder upslug2
+ tools-$(CONFIG_powerpc) += upx
+ tools-$(CONFIG_TARGET_x86) += qemu
+--- a/Makefile	1970-01-01 03:00:00.000000000 +0300
++++ b/nodejs/Makefile	2014-04-17 20:34:35.732993000 +0400
+@@ -0,0 +1,31 @@
++#
++# Copyright (C) 2008-2012 OpenWrt.org
++#
++# This is free software, licensed under the GNU General Public License v2.
++# See /LICENSE for more information.
++#
++
++include $(TOPDIR)/rules.mk
++
++PKG_NAME:=nodejs
++PKG_VERSION:=HEAD
++
++PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
++PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
++PKG_SOURCE_URL:=https://github.com/joyent/node.git
++PKG_SOURCE_PROTO:=git
++PKG_SOURCE_VERSION:=$(PKG_VERSION)
++
++PKG_BUILD_PARALLEL:=1
++
++include $(INCLUDE_DIR)/host-build.mk
++
++define Host/Configure
++		$(HOST_BUILD_DIR)/configure
++endef
++
++define Host/Install
++		$(INSTALL_BIN) $(HOST_BUILD_DIR)/out/Release/node $(STAGING_DIR_HOST)/bin/
++endef
++
++$(eval $(call HostBuild))
+
